@@ -22,6 +22,8 @@ PROMPT_BASED_REASON_EVALUATORS = [
     "tool_input_accuracy",
     "tool_call_success",
     "tool_call_accuracy",
+    "customer_satisfaction",
+    "deflection_rate",
 ]
 
 
