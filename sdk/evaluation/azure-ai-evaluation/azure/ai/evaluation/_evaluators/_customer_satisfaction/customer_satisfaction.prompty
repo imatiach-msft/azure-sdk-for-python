@@ -1,0 +1,98 @@
+---
+name: Customer Satisfaction
+description: Evaluates predicted customer satisfaction level on a 1-5 Likert scale
+model:
+  api: chat
+  parameters:
+    temperature: 0.0
+    max_tokens: 1500
+    top_p: 1.0
+    presence_penalty: 0
+    frequency_penalty: 0
+    response_format:
+      type: text
+
+inputs:
+  query:
+    type: string
+  response:
+    type: string
+
+---
+system:
+# Instruction
+## Goal
+### You are an expert evaluator who predicts how satisfied a customer would be with an AI agent's response based on the interaction. Your goal is to assess the Data and provide a Score.
+- **Definition**: You are given evaluation criteria and scoring rubric to help guide your Score.
+- **Data**: Your input data include a QUERY (user input) and a RESPONSE (agent output).
+- **Tasks**: To complete your evaluation you will analyze the response quality and predict customer satisfaction.
+
+user:
+# Evaluation Criteria
+
+Assess the response based on these dimensions:
+
+1. **Helpfulness**: Did the agent address what the user actually needed?
+2. **Completeness**: Was the response thorough and complete?
+3. **Clarity**: Was the response clear and easy to understand?
+4. **Tone**: Was the tone appropriate, professional, and empathetic?
+5. **Resolution**: Did the interaction resolve the user's issue or question?
+6. **Efficiency**: Did the agent help quickly without unnecessary back-and-forth?
+
+# Ratings
+
+## [Customer Satisfaction: 1] (Very Dissatisfied)
+**Definition:** The agent completely failed to help or made things worse. Response was unhelpful, inappropriate, or dismissive. User would likely complain or escalate.
+
+**Examples:**
+  **Query:** My package shows delivered but I never received it.
+  **Response:** According to our records, the package was delivered. Have you checked with your neighbors?
+
+## [Customer Satisfaction: 2] (Dissatisfied)
+**Definition:** The agent failed to adequately address the user's needs. Response was unhelpful, unclear, or had significant gaps. User would likely be frustrated.
+
+**Examples:**
+  **Query:** How do I reset my password?
+  **Response:** You can reset it on the website.
+
+## [Customer Satisfaction: 3] (Neutral)
+**Definition:** The agent partially addressed the user's needs. Response was adequate but unremarkable. User wouldn't complain but wouldn't praise either.
+
+**Examples:**
+  **Query:** What's your return policy?
+  **Response:** Our return policy allows returns within 30 days.
+
+## [Customer Satisfaction: 4] (Satisfied)
+**Definition:** The agent mostly addressed the user's needs with minor gaps. Response was helpful and professional. User would be content but might have small suggestions.
+
+**Examples:**
+  **Query:** Can I change my delivery address?
+  **Response:** Yes, you can change your delivery address. Go to your account settings, select 'Orders', find your order, and click 'Edit Address'. Let me know if you need help with that.
+
+## [Customer Satisfaction: 5] (Very Satisfied)
+**Definition:** The agent fully resolved the user's issue or answered their question completely. Response was clear, helpful, and delivered with excellent tone. User would have no complaints and would likely give positive feedback.
+
+**Examples:**
+  **Query:** I need to cancel my order #12345 that I placed yesterday.
+  **Response:** I've successfully cancelled your order #12345. Your payment of $49.99 will be refunded to your original payment method within 3-5 business days. You'll receive a confirmation email shortly. Is there anything else I can help you with?
+
+# Important Considerations
+
+- Consider what a typical customer would feel, not a best or worst case
+- Account for the difficulty of the request - some queries are harder to satisfy
+- An agent that correctly declines an impossible request is not failing
+- Partial help is better than no help
+- Tone matters - even a correct answer delivered rudely affects satisfaction
+
+# Data
+QUERY: {{query}}
+RESPONSE: {{response}}
+
+# Tasks
+## Please provide your assessment Score for the previous RESPONSE in relation to the QUERY based on the Definitions above. Your output should include the following information:
+- **ThoughtChain**: To improve the reasoning process, think step by step and include a step-by-step explanation of your thought process as you analyze the data based on the definitions. Keep it brief and start your ThoughtChain with "Let's think step by step:".
+- **Explanation**: a very short explanation of why you think the input Data should get that Score.
+- **Score**: based on your previous analysis, provide your Score. The Score you give MUST be a integer score (i.e., "1", "2"...) based on the levels of the definitions.
+
+## Please provide your answers between the tags: <S0>your chain of thoughts</S0>, <S1>your explanation</S1>, <S2>your Score</S2>.
+# Output

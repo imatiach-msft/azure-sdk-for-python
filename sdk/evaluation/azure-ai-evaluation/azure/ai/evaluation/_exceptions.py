@@ -104,6 +104,8 @@ class ErrorTarget(Enum):
     AOAI_GRADER = "AoaiGrader"
     CONVERSATION_HISTORY_PARSING = "_get_conversation_history"
     TOOL_OUTPUT_UTILIZATION_EVALUATOR = "ToolOutputUtilizationEvaluator"
+    CUSTOMER_SATISFACTION_EVALUATOR = "CustomerSatisfactionEvaluator"
+    DEFLECTION_RATE_EVALUATOR = "DeflectionRateEvaluator"
 
 
 class EvaluationException(AzureError):
